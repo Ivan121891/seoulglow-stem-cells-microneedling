@@ -103,7 +103,7 @@
       color: var(--foreground);
     }
     .title.center { text-align: center; }
-    .title .accent { color: var(--primary); font-weight: 600; }
+    .title .accent { color: #c8962e; font-weight: 600; }
 
     .subtitle {
       font-size: .875rem;
@@ -659,6 +659,7 @@
           startTime: startTime,
           endTime: endTime,
           title: SERVICE_NAME,
+          appointmentStatus: "confirmed",
           selectedTimezone: BUSINESS_TZ,
           assignedUserId: GHL_USER_ID,
           name: name,
@@ -678,6 +679,7 @@
 
         if (!res.ok) {
           const detail = (data && (data.error || data.message || data.msg)) || raw;
+          console.error("Appointment API response:", res.status, raw);
           throw new Error(`Appointment creation failed (${res.status}): ${detail}`);
         }
 
