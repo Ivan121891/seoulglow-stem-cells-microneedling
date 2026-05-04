@@ -678,10 +678,14 @@
         try { data = raw ? JSON.parse(raw) : null; } catch (_) {}
 
         if (!res.ok) {
-          const detail = (data && (data.error || data.message || data.msg)) || raw;
+          // data.message has the useful text, data.error is usually just "Bad Request"
+          let detail = raw;
+          if (data) {
+            detail = data.message || data.msg || data.error || raw;
+          }
           console.error("Appointment API response:", res.status, raw);
           console.error("Request body sent:", JSON.stringify(body));
-          throw new Error(`Appointment creation failed (${res.status}): ${raw}`);
+          throw new Error(`Appointment creation failed (${res.status}): ${detail}`);
         }
 
         return data;
