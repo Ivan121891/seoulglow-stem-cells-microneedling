@@ -619,21 +619,10 @@
 
       // ------- GHL API: Find or Create Contact -------
       async function findOrCreateContact(name, email, phone) {
-        // Search for existing contact by email via POST
-        const searchRes = await fetch(
-          `${GHL_API_BASE}/contacts/lookup?email=${encodeURIComponent(email)}&locationId=${GHL_LOCATION_ID}`,
-          { headers: { Authorization: `Bearer ${GHL_API_KEY}`, Version: "2021-04-15" } }
-        );
-        if (searchRes.ok) {
-          const data = await searchRes.json();
-          if (data.contacts && data.contacts.length > 0) {
-            return data.contacts[0].id;
-          }
-        }
-
-        // Create new contact
         const [firstName, ...rest] = name.split(/\s+/);
         const lastName = rest.join(" ");
+
+        // Try creating the contact first
         const createRes = await fetch(`${GHL_API_BASE}/contacts/`, {
           method: "POST",
           headers: GHL_HEADERS,
@@ -646,13 +635,18 @@
           }),
         });
 
-        if (!createRes.ok) {
-          const errBody = await createRes.text();
-          throw new Error(`Contact creation failed: ${createRes.status} ${errBody}`);
+        if (createRes.ok) {
+          const createData = await createRes.json();
+          return createData.contact ? createData.contact.id : createData.id;
         }
 
-        const createData = await createRes.json();
-        return createData.contact ? createData.contact.id : createData.id;
+        // If duplicate contact, extract the existing contact ID from the error
+        const errBody = await createRes.json();
+        if (errBody.contactId) {
+          return errBody.contactId;
+        }
+
+        throw new Error(`Contact creation failed: ${createRes.status} ${JSON.stringify(errBody)}`);
       }
 
       // ------- GHL API: Create Appointment Event -------
