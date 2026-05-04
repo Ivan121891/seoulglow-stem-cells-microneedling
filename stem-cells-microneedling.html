@@ -642,8 +642,9 @@
 
         // If duplicate contact, extract the existing contact ID from the error
         const errBody = await createRes.json();
-        if (errBody.contactId) {
-          return errBody.contactId;
+        const existingId = errBody?.contactId || errBody?.meta?.contactId;
+        if (existingId) {
+          return existingId;
         }
 
         throw new Error(`Contact creation failed: ${createRes.status} ${JSON.stringify(errBody)}`);
