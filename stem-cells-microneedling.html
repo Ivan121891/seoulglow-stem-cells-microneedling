@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SeoulGlow — Stem Cells + Microneedling Appointment Booking</title>
+  <meta name="description" content="Book your Stem Cells + Microneedling treatment at SeoulGlow" />
+  <meta name="theme-color" content="#F5D88E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F5D88E'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-family='system-ui' font-size='16' fill='%230a0a0a' font-weight='600' dominant-baseline='middle'%3ESG%3C/text%3E%3C/svg%3E" />
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1178133073434960');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1178133073434960&ev=PageView&noscript=1" alt="" /></noscript>
+
+  <style>
+    :root {
+      --bg: #fafafa;
+      --card-bg: #ffffff;
+      --foreground: #0a0a0a;
+      --muted: #f5f5f5;
+      --muted-foreground: #737373;
+      --border: #e5e5e5;
+      --primary: #F5D88E;
+      --primary-hover: #e8cb82;
+      --primary-fg: #0a0a0a;
+      --ring: #F5D88E;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --radius-card: 24px;
+      --radius-img: 16px;
+      --radius-pill: 9999px;
+      --shadow: 0 1px 2px 0 rgba(0,0,0,.04), 0 1px 3px 0 rgba(0,0,0,.06);
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: var(--foreground);
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 16px;
+      background: var(--bg);
+    }
+
+    .card {
+      max-width: 28rem;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      width: calc(100% - 16px);
+      margin: 8px auto 0;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-img);
+      overflow: hidden;
+    }
+    .hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius-img);
+    }
+
+    /* Card content */
+    .content {
+      padding: 16px 24px 24px 24px;
+    }
+
+    .title {
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.375;
+      margin: 0 0 16px 0;
+      color: var(--foreground);
+    }
+    .title.center { text-align: center; }
+    .title .accent { color: var(--primary); font-weight: 600; }
+
+    .subtitle {
+      font-size: .875rem;
+      color: var(--muted-foreground);
+      margin: 0 0 16px 0;
+    }
+    .subtitle.center { text-align: center; }
+
+    .address {
+      margin: 24px 0 0 0;
+      font-size: .8125rem;
+      color: var(--muted-foreground);
+      text-align: center;
+    }
+
+    /* Sections */
+    .section { margin-top: 4px; }
+    .section + .section { margin-top: 24px; }
+    .section-title {
+      font-size: .875rem;
+      font-weight: 500;
+      margin: 0 0 16px 0;
+      color: var(--foreground);
+    }
+
+    /* Date grid */
+    .date-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      row-gap: 16px;
+      column-gap: 8px;
+    }
+    .date-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .date-cell .dow {
+      font-size: .75rem;
+      color: var(--muted-foreground);
+      margin-bottom: 4px;
+    }
+    .date-cell .day {
+      padding: 8px 24px;
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--foreground);
+      border-radius: var(--radius-pill);
+      transition: background-color .15s, color .15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .date-cell:hover .day { background: var(--muted); }
+    .date-cell.selected .day {
+      background: var(--primary);
+      color: var(--primary-fg);
+    }
+    .date-cell.disabled { cursor: not-allowed; }
+    .date-cell.disabled .day { color: #d4d4d8; text-decoration: line-through; }
+    .date-cell.disabled:hover .day { background: transparent; }
+
+    /* Time slots */
+    .time-block + .time-block { margin-top: 16px; }
+    .time-label {
+      font-size: .75rem;
+      color: var(--muted-foreground);
+      margin: 0 0 8px 0;
+    }
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .time-cell {
+      padding: 10px 0;
+      font-size: .875rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--foreground);
+      transition: background-color .15s, color .15s, border-color .15s;
+    }
+    .time-cell:hover { background: var(--muted); }
+    .time-cell.selected {
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-color: var(--primary);
+    }
+
+    /* Buttons */
+    .primary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 24px;
+      padding: 12px 16px;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border: 0;
+      border-radius: var(--radius-pill);
+      font-size: .875rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity .15s;
+    }
+    .primary-btn:hover { background: var(--primary-hover); }
+    .primary-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+    .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      font-size: .875rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background-color .15s;
+    }
+    .secondary-btn:hover { background: var(--muted); }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: transparent;
+      border: 0;
+      padding: 0 0 12px 0;
+      color: var(--muted-foreground);
+      font-size: .875rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .back-btn:hover { color: var(--foreground); }
+
+    /* Form */
+    .form { display: flex; flex-direction: column; }
+    .field { display: flex; flex-direction: column; margin-bottom: 16px; }
+    .field-label {
+      font-size: .875rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--foreground);
+    }
+    .field input {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: .875rem;
+      font-family: inherit;
+      color: var(--foreground);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .field input:focus {
+      border-color: var(--ring);
+      box-shadow: 0 0 0 3px rgba(245, 216, 142, .35);
+    }
+    .error-text {
+      margin: 12px 0 0 0;
+      font-size: .8125rem;
+      color: var(--danger);
+      text-align: center;
+    }
+
+    /* Confirmation */
+    .confirmation { text-align: center; padding-top: 24px; }
+    .check-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--success);
+      margin-bottom: 8px;
+    }
+    .confirm-card {
+      margin: 12px 0 8px 0;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #fafafa;
+      text-align: left;
+      font-size: .875rem;
+      color: var(--foreground);
+      line-height: 1.5;
+    }
+    .confirm-card .row { display: flex; justify-content: space-between; gap: 12px; }
+    .confirm-card .row + .row { margin-top: 6px; }
+    .confirm-card .label { color: var(--muted-foreground); }
+
+    /* Spinner */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(10,10,10,.25);
+      border-top-color: #0a0a0a;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-left: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card" id="card">
+      <!-- Hero image -->
+      <div class="hero">
+        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&h=338&fit=crop" alt="Spa treatment room with massage bed and ambient lighting" />
+      </div>
+
+      <!-- STEP 1: Date selection -->
+      <section class="content" id="step-date">
+        <h1 class="title">Choose date and time for your <span class="accent">Stem Cells + Microneedling</span> appointment</h1>
+
+        <div class="section">
+          <h2 class="section-title">Date</h2>
+          <div class="date-grid" id="date-grid"></div>
+        </div>
+
+        <p class="address">SeoulGlow — Regenerative Aesthetics</p>
+      </section>
+
+      <!-- STEP 2: Time selection -->
+      <section class="content hidden" id="step-time">
+        <button type="button" class="back-btn" data-back="date">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          Back
+        </button>
+        <h1 class="title">Select your preferred time</h1>
+        <p class="subtitle" id="time-summary"></p>
+
+        <div class="time-block">
+          <p class="time-label">Morning</p>
+          <div class="time-grid" id="morning-grid"></div>
+        </div>
+
+        <div class="time-block">
+          <p class="time-label">Afternoon</p>
+          <div class="time-grid" id="afternoon-grid"></div>
+        </div>
+      </section>
+
+      <!-- STEP 3: Customer details form -->
+      <section class="content hidden" id="step-details">
+        <button type="button" class="back-btn" data-back="time">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          Back
+        </button>
+        <h1 class="title">Enter your details</h1>
+        <p class="subtitle" id="details-summary"></p>
+
+        <form id="details-form" class="form" autocomplete="on" novalidate>
+          <label class="field">
+            <span class="field-label">Name</span>
+            <input type="text" name="name" id="name" placeholder="Full name" autocomplete="name" required />
+          </label>
+          <label class="field">
+            <span class="field-label">Email</span>
+            <input type="email" name="email" id="email" placeholder="name@example.com" autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span class="field-label">Phone</span>
+            <input type="tel" name="phone" id="phone" placeholder="(123) 456-7890" autocomplete="tel" required />
+          </label>
+
+          <button type="submit" class="primary-btn" id="submit-btn">
+            <span class="btn-label">Schedule Appointment</span>
+            <span class="spinner hidden" aria-hidden="true"></span>
+          </button>
+          <p class="error-text hidden" id="error-text">Failed to book appointment</p>
+        </form>
+      </section>
+
+      <!-- STEP 4: Confirmation -->
+      <section class="content hidden confirmation" id="step-confirmed">
+        <div class="check-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h1 class="title center">Appointment Requested!</h1>
+        <p class="subtitle center">You will receive a confirmation shortly.</p>
+
+        <div class="confirm-card" id="confirm-card"></div>
+
+        <a class="primary-btn" id="gcal-link" target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+          Add to Google Calendar
+        </a>
+        <button type="button" class="secondary-btn" id="reset-btn">Book Another Appointment</button>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      // ------- GHL Configuration -------
+      const GHL_API_KEY = "pit-e641bece-1afa-4229-86e3-4fc4ce792956";
+      const GHL_LOCATION_ID = "Vyf83R6wePOPyk0gF6Hq";
+      const GHL_CALENDAR_ID = "lBbCGl8ewA6QkrXg1Sun";
+      const GHL_USER_ID = "2tQreqXcDpaAiSBqlK7T";
+      const GHL_API_BASE = "https://rest.gohighlevel.com/v1";
+
+      // ------- Service Config -------
+      const SERVICE_NAME = "Stem Cells + Microneedling";
+      const SERVICE_DURATION_MIN = 60;
+      const BUSINESS_TZ = "America/Los_Angeles";
+
+      const MORNING_SLOTS = [
+        { label: "9:00 AM", hour: 9, minute: 0 },
+        { label: "10:00 AM", hour: 10, minute: 0 },
+        { label: "11:00 AM", hour: 11, minute: 0 },
+      ];
+      const AFTERNOON_SLOTS = [
+        { label: "12:00 PM", hour: 12, minute: 0 },
+        { label: "1:00 PM",  hour: 13, minute: 0 },
+        { label: "2:00 PM",  hour: 14, minute: 0 },
+        { label: "3:00 PM",  hour: 15, minute: 0 },
+        { label: "4:00 PM",  hour: 16, minute: 0 },
+        { label: "5:00 PM",  hour: 17, minute: 0 },
+      ];
+
+      const DOW_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      const STEPS = ["date", "time", "details", "confirmed"];
+
+      // ------- State -------
+      const today = startOfDay(new Date());
+      let selectedDate = null;
+      let selectedTime = null;
+
+      // ------- Elements -------
+      const $ = (id) => document.getElementById(id);
+      const dateGrid = $("date-grid");
+      const morningGrid = $("morning-grid");
+      const afternoonGrid = $("afternoon-grid");
+
+      const timeSummary    = $("time-summary");
+      const detailsSummary = $("details-summary");
+      const detailsForm    = $("details-form");
+      const submitBtn      = $("submit-btn");
+      const btnLabel       = submitBtn.querySelector(".btn-label");
+      const spinner        = submitBtn.querySelector(".spinner");
+      const errorText      = $("error-text");
+      const resetBtn       = $("reset-btn");
+      const gcalLink       = $("gcal-link");
+      const confirmCard    = $("confirm-card");
+
+      // ------- Helpers -------
+      function startOfDay(d) {
+        const x = new Date(d);
+        x.setHours(0, 0, 0, 0);
+        return x;
+      }
+      function pad(n) { return String(n).padStart(2, "0"); }
+
+      function offsetMinutesForTz(date, tz) {
+        const dtf = new Intl.DateTimeFormat("en-US", {
+          timeZone: tz,
+          year: "numeric", month: "2-digit", day: "2-digit",
+          hour: "2-digit", minute: "2-digit", second: "2-digit",
+          hourCycle: "h23",
+        });
+        const parts = dtf.formatToParts(date);
+        const get = (t) => parseInt(parts.find((p) => p.type === t).value, 10);
+        const asUtc = Date.UTC(
+          get("year"), get("month") - 1, get("day"),
+          get("hour"), get("minute"), get("second"),
+        );
+        return Math.round((asUtc - date.getTime()) / 60000);
+      }
+
+      function dateFromWallTime(year, month, day, hour, minute, tz) {
+        const approx = new Date(Date.UTC(year, month, day, hour, minute));
+        const off = offsetMinutesForTz(approx, tz);
+        return new Date(approx.getTime() - off * 60000);
+      }
+
+      function isoInTz(date, tz) {
+        const off = offsetMinutesForTz(date, tz);
+        const wall = new Date(date.getTime() + off * 60000);
+        const sign = off >= 0 ? "+" : "-";
+        const abs = Math.abs(off);
+        return `${wall.getUTCFullYear()}-${pad(wall.getUTCMonth() + 1)}-${pad(wall.getUTCDate())}T${pad(wall.getUTCHours())}:${pad(wall.getUTCMinutes())}:${pad(wall.getUTCSeconds())}${sign}${pad(Math.floor(abs / 60))}:${pad(abs % 60)}`;
+      }
+
+      function sameDay(a, b) {
+        return a && b &&
+          a.getFullYear() === b.getFullYear() &&
+          a.getMonth() === b.getMonth() &&
+          a.getDate() === b.getDate();
+      }
+
+      function formatLongDate(d) {
+        return d.toLocaleDateString(undefined, {
+          weekday: "long", month: "long", day: "numeric", year: "numeric",
+        });
+      }
+
+      // ------- Step navigation -------
+      function showStep(step) {
+        STEPS.forEach((s) => {
+          const el = $("step-" + s);
+          if (el) el.classList.toggle("hidden", s !== step);
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // ------- Calendar render -------
+      function renderMonth() {
+        dateGrid.innerHTML = "";
+        const cells = [];
+        const cursor = new Date(today);
+        for (let i = 0; i < 6; i++) {
+          cells.push(new Date(cursor));
+          cursor.setDate(cursor.getDate() + 1);
+        }
+
+        cells.forEach((d) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "date-cell";
+          if (sameDay(d, selectedDate)) btn.classList.add("selected");
+
+          const dow = document.createElement("span");
+          dow.className = "dow";
+          dow.textContent = DOW_SHORT[d.getDay()];
+
+          const day = document.createElement("span");
+          day.className = "day";
+          day.textContent = String(d.getDate());
+
+          btn.appendChild(dow);
+          btn.appendChild(day);
+          btn.addEventListener("click", () => selectDate(d));
+          dateGrid.appendChild(btn);
+        });
+      }
+
+      function renderTimes() {
+        function build(grid, slots) {
+          grid.innerHTML = "";
+          slots.forEach((s) => {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = "time-cell";
+            if (selectedTime && selectedTime.label === s.label) b.classList.add("selected");
+            b.textContent = s.label;
+            b.addEventListener("click", () => selectTime(s));
+            grid.appendChild(b);
+          });
+        }
+        build(morningGrid, MORNING_SLOTS);
+        build(afternoonGrid, AFTERNOON_SLOTS);
+      }
+
+      // ------- Selection handlers -------
+      function selectDate(d) {
+        selectedDate = startOfDay(d);
+        selectedTime = null;
+        renderMonth();
+        renderTimes();
+        timeSummary.textContent = formatLongDate(selectedDate);
+        showStep("time");
+        track("AddToCart", { content_name: SERVICE_NAME });
+      }
+
+      function selectTime(slot) {
+        selectedTime = slot;
+        renderTimes();
+        detailsSummary.textContent =
+          `${formatLongDate(selectedDate)} \u2022 ${selectedTime.label}`;
+        showStep("details");
+        track("InitiateCheckout", { content_name: SERVICE_NAME });
+      }
+
+      function track(event, params) {
+        if (typeof window.fbq === "function") {
+          try { window.fbq("track", event, params || {}); } catch (_) {}
+        }
+      }
+
+      // ------- Back buttons -------
+      document.querySelectorAll(".back-btn").forEach((btn) => {
+        btn.addEventListener("click", () => showStep(btn.dataset.back));
+      });
+
+      // ------- GHL API: Find or Create Contact -------
+      async function findOrCreateContact(name, email, phone) {
+        // Search for existing contact by email
+        const searchRes = await fetch(
+          `${GHL_API_BASE}/contacts/lookup?email=${encodeURIComponent(email)}`,
+          { headers: { Authorization: `Bearer ${GHL_API_KEY}` } }
+        );
+        if (searchRes.ok) {
+          const data = await searchRes.json();
+          if (data.contacts && data.contacts.length > 0) {
+            return data.contacts[0].id;
+          }
+        }
+
+        // Create new contact
+        const [firstName, ...rest] = name.split(/\s+/);
+        const lastName = rest.join(" ");
+        const createRes = await fetch(`${GHL_API_BASE}/contacts/`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${GHL_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            locationId: GHL_LOCATION_ID,
+            firstName: firstName || name,
+            lastName: lastName,
+            email: email,
+            phone: phone,
+          }),
+        });
+
+        if (!createRes.ok) {
+          const errBody = await createRes.text();
+          throw new Error(`Contact creation failed: ${createRes.status} ${errBody}`);
+        }
+
+        const createData = await createRes.json();
+        return createData.contact ? createData.contact.id : createData.id;
+      }
+
+      // ------- GHL API: Create Appointment Event -------
+      async function createAppointment(contactId, startTime, endTime, name, email, phone) {
+        const body = {
+          calendarId: GHL_CALENDAR_ID,
+          locationId: GHL_LOCATION_ID,
+          contactId: contactId,
+          startTime: startTime,
+          endTime: endTime,
+          title: SERVICE_NAME,
+          selectedTimezone: BUSINESS_TZ,
+          assignedUserId: GHL_USER_ID,
+          name: name,
+          email: email,
+          phone: phone,
+        };
+
+        const res = await fetch(`${GHL_API_BASE}/calendars/events/appointments`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${GHL_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+
+        const raw = await res.text();
+        let data = null;
+        try { data = raw ? JSON.parse(raw) : null; } catch (_) {}
+
+        if (!res.ok) {
+          const detail = (data && (data.error || data.message || data.msg)) || raw;
+          throw new Error(`Appointment creation failed (${res.status}): ${detail}`);
+        }
+
+        return data;
+      }
+
+      // ------- Form submit -------
+      detailsForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errorText.classList.add("hidden");
+
+        const name  = $("name").value.trim();
+        const email = $("email").value.trim();
+        const phone = $("phone").value.trim();
+
+        if (!name || !email || !phone || !selectedDate || !selectedTime) {
+          errorText.textContent = "Please fill in all fields.";
+          errorText.classList.remove("hidden");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        btnLabel.textContent = "Booking";
+        spinner.classList.remove("hidden");
+
+        const start = dateFromWallTime(
+          selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(),
+          selectedTime.hour, selectedTime.minute, BUSINESS_TZ,
+        );
+        const end = new Date(start.getTime() + SERVICE_DURATION_MIN * 60000);
+
+        const startISO = isoInTz(start, BUSINESS_TZ);
+        const endISO = isoInTz(end, BUSINESS_TZ);
+
+        try {
+          // 1. Find or create the contact in GHL
+          const contactId = await findOrCreateContact(name, email, phone);
+
+          // 2. Create the appointment on the calendar
+          await createAppointment(contactId, startISO, endISO, name, email, phone);
+
+          track("Lead", { content_name: SERVICE_NAME });
+          track("Schedule", { content_name: SERVICE_NAME });
+
+          renderConfirmation({
+            service: SERVICE_NAME,
+            name, email, phone,
+            time: selectedTime.label,
+          });
+          showStep("confirmed");
+        } catch (err) {
+          console.error("Booking failed", err);
+          errorText.textContent = err.message || "Booking failed. Please try again or contact us.";
+          errorText.classList.remove("hidden");
+        } finally {
+          submitBtn.disabled = false;
+          btnLabel.textContent = "Schedule Appointment";
+          spinner.classList.add("hidden");
+        }
+      });
+
+      // ------- Confirmation rendering -------
+      function renderConfirmation(p) {
+        confirmCard.innerHTML = `
+          <div class="row"><span class="label">Service</span><span>${escapeHtml(p.service)}</span></div>
+          <div class="row"><span class="label">Date</span><span>${escapeHtml(formatLongDate(selectedDate))}</span></div>
+          <div class="row"><span class="label">Time</span><span>${escapeHtml(p.time)}</span></div>
+          <div class="row"><span class="label">Name</span><span>${escapeHtml(p.name)}</span></div>
+          <div class="row"><span class="label">Email</span><span>${escapeHtml(p.email)}</span></div>
+          <div class="row"><span class="label">Phone</span><span>${escapeHtml(p.phone)}</span></div>
+        `;
+        gcalLink.href = buildGCalUrl(p);
+      }
+
+      function buildGCalUrl(p) {
+        const start = dateFromWallTime(
+          selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(),
+          selectedTime.hour, selectedTime.minute, BUSINESS_TZ,
+        );
+        const end = new Date(start.getTime() + SERVICE_DURATION_MIN * 60000);
+        const fmt = (d) =>
+          d.getUTCFullYear() +
+          pad(d.getUTCMonth() + 1) +
+          pad(d.getUTCDate()) + "T" +
+          pad(d.getUTCHours()) +
+          pad(d.getUTCMinutes()) +
+          pad(d.getUTCSeconds()) + "Z";
+        const params = new URLSearchParams({
+          action: "TEMPLATE",
+          text: SERVICE_NAME,
+          dates: `${fmt(start)}/${fmt(end)}`,
+          details: `Booking for ${p.name} (${p.email}, ${p.phone}).`,
+        });
+        return `https://calendar.google.com/calendar/render?${params.toString()}`;
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, (c) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+        }[c]));
+      }
+
+      // ------- Reset -------
+      resetBtn.addEventListener("click", () => {
+        selectedDate = null;
+        selectedTime = null;
+        detailsForm.reset();
+        renderMonth();
+        showStep("date");
+      });
+
+      // ------- Init -------
+      renderMonth();
+      renderTimes();
+      showStep("date");
+    })();
+  </script>
+</body>
+</html>
