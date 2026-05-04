@@ -680,7 +680,8 @@
         if (!res.ok) {
           const detail = (data && (data.error || data.message || data.msg)) || raw;
           console.error("Appointment API response:", res.status, raw);
-          throw new Error(`Appointment creation failed (${res.status}): ${detail}`);
+          console.error("Request body sent:", JSON.stringify(body));
+          throw new Error(`Appointment creation failed (${res.status}): ${raw}`);
         }
 
         return data;
