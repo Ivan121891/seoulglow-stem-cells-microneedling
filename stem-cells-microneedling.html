@@ -423,11 +423,16 @@
       "use strict";
 
       // ------- GHL Configuration -------
-      const GHL_API_KEY = "pit-fc59b1e0-7487-470f-959c-526841e58769";
+      const GHL_API_KEY = "pit-4c4be7ba-5e34-4213-9dcb-135d6df302c4";
       const GHL_LOCATION_ID = "Vyf83R6wePOPyk0gF6Hq";
       const GHL_CALENDAR_ID = "lBbCGl8ewA6QkrXg1Sun";
       const GHL_USER_ID = "2tQreqXcDpaAiSBqlK7T";
-      const GHL_API_BASE = "https://rest.gohighlevel.com/v1";
+      const GHL_API_BASE = "https://services.leadconnectorhq.com";
+      const GHL_HEADERS = {
+        Authorization: `Bearer ${GHL_API_KEY}`,
+        "Content-Type": "application/json",
+        Version: "2021-04-15",
+      };
 
       // ------- Service Config -------
       const SERVICE_NAME = "Stem Cells + Microneedling";
@@ -614,10 +619,10 @@
 
       // ------- GHL API: Find or Create Contact -------
       async function findOrCreateContact(name, email, phone) {
-        // Search for existing contact by email
+        // Search for existing contact by email via POST
         const searchRes = await fetch(
-          `${GHL_API_BASE}/contacts/lookup?email=${encodeURIComponent(email)}`,
-          { headers: { Authorization: `Bearer ${GHL_API_KEY}` } }
+          `${GHL_API_BASE}/contacts/lookup?email=${encodeURIComponent(email)}&locationId=${GHL_LOCATION_ID}`,
+          { headers: { Authorization: `Bearer ${GHL_API_KEY}`, Version: "2021-04-15" } }
         );
         if (searchRes.ok) {
           const data = await searchRes.json();
@@ -631,10 +636,7 @@
         const lastName = rest.join(" ");
         const createRes = await fetch(`${GHL_API_BASE}/contacts/`, {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${GHL_API_KEY}`,
-            "Content-Type": "application/json",
-          },
+          headers: GHL_HEADERS,
           body: JSON.stringify({
             locationId: GHL_LOCATION_ID,
             firstName: firstName || name,
@@ -671,10 +673,7 @@
 
         const res = await fetch(`${GHL_API_BASE}/calendars/events/appointments`, {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${GHL_API_KEY}`,
-            "Content-Type": "application/json",
-          },
+          headers: GHL_HEADERS,
           body: JSON.stringify(body),
         });
 
